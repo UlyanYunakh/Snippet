@@ -29,13 +29,13 @@ namespace SnippetProject
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration.GetConnectionString("sqlConnection"));
 
-            services.AddControllers(config =>
+            // services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
                 {
-                    config.RespectBrowserAcceptHeader = true;
-                    config.ReturnHttpNotAcceptable = true;
-                }).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
-                .AddXmlDataContractSerializerFormatters();
-            
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SnippetProject", Version = "v1" });
